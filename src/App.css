@@ -15,12 +15,21 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
   line-height: 1.6;
+  width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
 }
 
 #root {
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .App {
@@ -48,12 +57,19 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .poem-line {
   font-size: 1.2rem;
   line-height: 1.8;
   color: var(--text-color);
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
 }
 
 .poem-line::first-letter {
@@ -173,23 +189,50 @@ button:hover {
 @media (max-width: 600px) {
   #root {
     padding: 1rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
   }
 
   .poem-container {
-    padding: 1.5rem;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .poem-line {
+    font-size: 1.1rem;
+    line-height: 1.6;
   }
 
   .input-group {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  label {
+    min-width: unset;
+    text-align: left;
   }
 
   input[type="number"] {
     width: 100%;
+  }
+  
+  .button-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  button {
+    width: 100%;
+    min-width: unset;
+    margin-bottom: 0.5rem;
   }
 }
 
