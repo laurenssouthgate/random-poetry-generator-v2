@@ -134,16 +134,20 @@ label {
   font-family: 'Arial', 'Helvetica', sans-serif;
 }
 
-input[type="number"] {
-  padding: 0.5rem;
+input[type="text"] {
+  padding: 0.75rem 1.5rem;
   border: 1px solid var(--border-color);
   border-radius: 4px;
   font-size: 1rem;
-  width: 80px;
+  width: 100%;
+  max-width: 120px;
   text-align: center;
+  font-family: 'Arial', 'Helvetica', sans-serif;
+  transition: border-color 0.2s ease;
+  margin: 0 auto;
 }
 
-input[type="number"]:focus {
+input[type="text"]:focus {
   outline: none;
   border-color: var(--secondary-color);
   box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
@@ -238,7 +242,7 @@ button:hover {
     text-align: left;
   }
 
-  input[type="number"] {
+  input[type="text"] {
     width: 100%;
   }
   
