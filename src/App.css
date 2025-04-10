@@ -251,12 +251,22 @@ button:hover {
     width: 100%;
     min-width: unset;
     margin-bottom: 0.5rem;
+    justify-content: center;
+    text-align: center;
   }
 
   .controls {
     padding: 1rem;
     max-width: calc(100vw - 2rem);
     width: calc(100vw - 2rem);
+  }
+
+  .share-button {
+    justify-content: center;
+  }
+  
+  .share-button svg {
+    margin-right: 4px;
   }
 }
 
@@ -300,6 +310,7 @@ button:hover {
   gap: 0.5rem;
   background-color: #2c5282;
   color: white;
+  justify-content: center;
 }
 
 .share-button svg {
