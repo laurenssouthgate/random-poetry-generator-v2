@@ -12,8 +12,22 @@ const App: React.FC = () => {
   const poemContainerRef = useRef<HTMLDivElement>(null);
 
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.max(1, Math.min(100, Number(e.target.value)));
-    setInputLines(value);
+    const inputValue = e.target.value;
+    
+    // Allow empty input (for when users are deleting)
+    if (inputValue === '') {
+      setInputLines(1); // Keep the state as 1 but allow the field to appear empty temporarily
+      return;
+    }
+    
+    const numValue = parseInt(inputValue, 10);
+    
+    // Check if it's a valid number
+    if (!isNaN(numValue)) {
+      // Clamp between 1 and 100
+      const value = Math.max(1, Math.min(100, numValue));
+      setInputLines(value);
+    }
   };
 
   const handleGenerate = () => {
@@ -147,9 +161,17 @@ const App: React.FC = () => {
           <label htmlFor="numLines">Number of lines:</label>
           <input
             id="numLines"
-            type="number"
-            value={inputLines}
+            type="tel"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            value={inputLines === 1 && document.activeElement === document.getElementById('numLines') ? '' : inputLines}
             onChange={handleNumberChange}
+            onBlur={() => {
+              // Ensure the input is not empty when user leaves the field
+              if (inputLines < 1) {
+                setInputLines(1);
+              }
+            }}
             onKeyDown={(e) => {
               // Prevent the default behavior of the up/down arrow keys
               if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
@@ -158,6 +180,7 @@ const App: React.FC = () => {
             }}
             min="1"
             max="100"
+            placeholder="1"
           />
         </div>
 
