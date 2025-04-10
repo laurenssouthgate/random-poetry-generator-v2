@@ -6,32 +6,44 @@ import './App.css'; // Optional: Add your styles
 
 const App: React.FC = () => {
   const [inputLines, setInputLines] = useState<number>(1);
+  const [inputValue, setInputValue] = useState<string>("1");
   const [generatedLines, setGeneratedLines] = useState<string[]>([]);
   const [error, setError] = useState<string>('');
   const [generationKey, setGenerationKey] = useState<number>(0);
   const poemContainerRef = useRef<HTMLDivElement>(null);
 
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
+    // Track the raw string input
+    const rawValue = e.target.value;
+    setInputValue(rawValue);
     
-    // Allow empty input (for when users are deleting)
-    if (inputValue === '') {
-      setInputLines(1); // Keep the state as 1 but allow the field to appear empty temporarily
+    // Convert to number if possible
+    if (rawValue === '') {
+      // Allow empty string but don't update inputLines yet
       return;
     }
     
-    const numValue = parseInt(inputValue, 10);
-    
-    // Check if it's a valid number
+    const numValue = parseInt(rawValue, 10);
     if (!isNaN(numValue)) {
-      // Clamp between 1 and 100
-      const value = Math.max(1, Math.min(100, numValue));
-      setInputLines(value);
+      // Only update if it's a valid number and within range
+      if (numValue >= 1 && numValue <= 100) {
+        setInputLines(numValue);
+      } else if (numValue > 100) {
+        // Cap at 100
+        setInputLines(100);
+        setInputValue("100");
+      }
     }
   };
 
   const handleGenerate = () => {
     try {
+      // Ensure we have a valid number before generating
+      if (inputValue === '' || inputLines < 1) {
+        setInputLines(1);
+        setInputValue("1");
+      }
+      
       const lines: string[] = [];
       for (let i = 0; i < inputLines; i++) {
         const randomTemplate = templates[Math.floor(Math.random() * templates.length)];
@@ -46,14 +58,20 @@ const App: React.FC = () => {
     }
   };
 
+  // Handle input blur to ensure valid state when leaving field
+  const handleInputBlur = () => {
+    if (inputValue === '' || parseInt(inputValue, 10) < 1) {
+      setInputLines(1);
+      setInputValue("1");
+    }
+  };
+
   const handleSaveImage = async () => {
     if (!poemContainerRef.current) return;
 
     try {
-      // Create a completely fresh container with no inherited styles
       const tempContainer = document.createElement('div');
       
-      // Apply basic styling for a clean appearance
       tempContainer.style.backgroundColor = 'white';
       tempContainer.style.padding = '2rem';
       tempContainer.style.width = `${poemContainerRef.current.offsetWidth}px`;
@@ -62,38 +80,33 @@ const App: React.FC = () => {
       tempContainer.style.lineHeight = '1.8';
       tempContainer.style.color = '#2c3e50';
       
-      // Create plain text paragraphs from the poem lines
       const poemLines = poemContainerRef.current.querySelectorAll('.poem-line');
       poemLines.forEach(line => {
         let text = line.textContent || '';
         if (text.length > 0) {
-          // Capitalize the first letter of each line
           const firstLetter = text.charAt(0).toUpperCase();
           const restOfText = text.slice(1);
           text = firstLetter + restOfText;
           
-          // Create a new paragraph element for each line
           const paragraph = document.createElement('p');
           paragraph.style.margin = '1rem 0';
-          paragraph.textContent = text; // Use textContent to avoid any HTML/styling
+          paragraph.textContent = text;
           tempContainer.appendChild(paragraph);
         }
       });
       
-      // Temporarily add to document (hidden) for html2canvas to work
       tempContainer.style.position = 'absolute';
       tempContainer.style.left = '-9999px';
       document.body.appendChild(tempContainer);
       
       const canvas = await html2canvas(tempContainer, {
         backgroundColor: '#ffffff',
-        scale: 2, // Higher quality
+        scale: 2,
         useCORS: true,
         allowTaint: true,
         logging: false
       });
       
-      // Clean up
       document.body.removeChild(tempContainer);
 
       const link = document.createElement('a');
@@ -110,30 +123,25 @@ const App: React.FC = () => {
     if (!poemContainerRef.current || generatedLines.length === 0) return;
     
     try {
-      // Collect the text of all poem lines
       const poemLines = poemContainerRef.current.querySelectorAll('.poem-line');
       const poemText = Array.from(poemLines)
         .map(line => {
           const text = line.textContent || '';
-          // Ensure first letter is capitalized
           return text.charAt(0).toUpperCase() + text.slice(1);
         })
         .join('\n\n');
       
-      // Check if the Web Share API is supported
       if (navigator.share) {
         await navigator.share({
           title: 'Illuminated Poem',
           text: poemText,
         });
       } else {
-        // Fallback for browsers that don't support the Web Share API
         navigator.clipboard.writeText(poemText);
         alert('Poem copied to clipboard! The Web Share API is not supported in this browser.');
       }
     } catch (err) {
       if (err instanceof Error && err.name !== 'AbortError') {
-        // AbortError is thrown when user cancels the share operation
         setError('Error sharing poem.');
         console.error(err);
       }
@@ -161,19 +169,13 @@ const App: React.FC = () => {
           <label htmlFor="numLines">Number of lines:</label>
           <input
             id="numLines"
-            type="tel"
+            type="text"
             inputMode="numeric"
             pattern="[0-9]*"
-            value={inputLines === 1 && document.activeElement === document.getElementById('numLines') ? '' : inputLines}
+            value={inputValue}
             onChange={handleNumberChange}
-            onBlur={() => {
-              // Ensure the input is not empty when user leaves the field
-              if (inputLines < 1) {
-                setInputLines(1);
-              }
-            }}
+            onBlur={handleInputBlur}
             onKeyDown={(e) => {
-              // Prevent the default behavior of the up/down arrow keys
               if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
                 e.preventDefault();
               }
