@@ -8,7 +8,7 @@ interface LineComponentProps {
 
 const LineComponent: React.FC<LineComponentProps> = React.memo(({ template }) => {
   const line = useMemo(() => {
-    return template.replace(/\[([a-zA-Z]+)(?:\(([^)]+)\))?\]/g, (match, wordType, context) => {
+    return template.replace(/\[([a-zA-Z]+)(?:\(([^)]+)\))?\]/g, (_, wordType, context) => {
       const word = getRandomWord(wordType as WordType);
       let transformedWord = word.toLowerCase();
       

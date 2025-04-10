@@ -1,11 +1,11 @@
 /**
  * Transforms a word based on its type and context
  * @param word The word to transform
- * @param type The type of word (noun, verb, adjective)
+ * @param _type The type of word (noun, verb, adjective)
  * @param context Optional context for transformation (e.g., 'plural' for nouns)
  * @returns The transformed word
  */
-export const transformWord = (word: string, type: string, context?: string): string => {
+export const transformWord = (word: string, _type: string, context?: string): string => {
   if (context === 'plural') {
     return pluralize(word);
   }
