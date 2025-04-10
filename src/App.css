@@ -1,0 +1,218 @@
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #3498db;
+  --accent-color: #e74c3c;
+  --background-color: #f8f9fa;
+  --text-color: #2c3e50;
+  --border-color: #e0e0e0;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --illuminated-color: #8B0000; /* Dark red for illuminated letter */
+}
+
+body {
+  margin: 0;
+  font-family: 'Georgia', serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+#root {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+h1 {
+  color: var(--primary-color);
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+.poem-container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px var(--shadow-color);
+  margin-bottom: 2rem;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.poem-line {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: var(--text-color);
+}
+
+.poem-line::first-letter {
+  text-transform: uppercase;
+}
+
+.poem-line:first-child::first-letter {
+  font-size: 3rem;
+  color: var(--illuminated-color);
+  font-weight: bold;
+  float: left;
+  margin-right: 0.5rem;
+  line-height: 0.7;
+  padding-top: 0;
+  margin-top: -0.1rem;
+  position: relative;
+  font-family: 'Georgia', serif;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.first-letter {
+  font-size: 3rem;
+  color: var(--illuminated-color);
+  font-weight: bold;
+  float: left;
+  margin-right: 0.5rem;
+  line-height: 0.7;
+  padding-top: 0;
+  margin-top: -0.1rem;
+  position: relative;
+  font-family: 'Georgia', serif;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.controls {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px var(--shadow-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  justify-content: center;
+  width: 100%;
+}
+
+label {
+  font-size: 1rem;
+  color: var(--primary-color);
+  min-width: 120px;
+  text-align: center;
+  font-family: 'Arial', 'Helvetica', sans-serif;
+}
+
+input[type="number"] {
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 1rem;
+  width: 80px;
+  text-align: center;
+}
+
+input[type="number"]:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  justify-content: center;
+}
+
+button {
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: 'Arial', 'Helvetica', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: auto;
+  min-width: 120px;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+.save-button {
+  background-color: var(--accent-color);
+}
+
+.save-button:hover {
+  background-color: #c0392b;
+}
+
+.error-message {
+  color: var(--accent-color);
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+  #root {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .poem-container {
+    padding: 1.5rem;
+  }
+
+  .input-group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  input[type="number"] {
+    width: 100%;
+  }
+}
+
+.image-export .poem-line::first-letter {
+  font-size: inherit;
+  color: inherit;
+  font-weight: inherit;
+  float: none;
+  margin: 0;
+  line-height: inherit;
+  padding: 0;
+  font-family: inherit;
+  text-shadow: none;
+}
+
+.share-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #2c5282;
+  color: white;
+}
+
+.share-button svg {
+  margin-right: 4px;
+}
