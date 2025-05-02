@@ -13,23 +13,17 @@ const App: React.FC = () => {
   const poemContainerRef = useRef<HTMLDivElement>(null);
 
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Track the raw string input
     const rawValue = e.target.value;
     setInputValue(rawValue);
-    
-    // Convert to number if possible
     if (rawValue === '') {
-      // Allow empty string but don't update inputLines yet
       return;
     }
     
     const numValue = parseInt(rawValue, 10);
     if (!isNaN(numValue)) {
-      // Only update if it's a valid number and within range
       if (numValue >= 1 && numValue <= 100) {
         setInputLines(numValue);
       } else if (numValue > 100) {
-        // Cap at 100
         setInputLines(100);
         setInputValue("100");
       }
@@ -38,7 +32,6 @@ const App: React.FC = () => {
 
   const handleGenerate = () => {
     try {
-      // Ensure we have a valid number before generating
       if (inputValue === '' || inputLines < 1) {
         setInputLines(1);
         setInputValue("1");
@@ -57,8 +50,6 @@ const App: React.FC = () => {
       console.error(err);
     }
   };
-
-  // Handle input blur to ensure valid state when leaving field
   const handleInputBlur = () => {
     if (inputValue === '' || parseInt(inputValue, 10) < 1) {
       setInputLines(1);
@@ -151,8 +142,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <h1>Random Poem Generator</h1>
-      
-      {/* Display the generated lines */}
+
       <div className="poem-container" ref={poemContainerRef}>
         {generatedLines.length > 0 &&
           generatedLines.map((line, index) => (
